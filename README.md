@@ -1,6 +1,12 @@
 # Chatbot Project: Intelligent Conversational Assistant
 
-![Chatbot Screenshot](path/to/screenshot.png)
+![Screenshot 2024-11-08 214342](https://github.com/user-attachments/assets/ee94d458-dfd9-4f8d-8dbe-fd08cf2269c6)
+
+
+![Screenshot 2024-11-08 212530](https://github.com/user-attachments/assets/275ed0aa-2d8d-490c-9bd3-992af7f84fc4)
+
+![Screenshot 2024-11-08 212321](https://github.com/user-attachments/assets/4d86e32f-e097-4708-b206-54233058c2e4)
+
 
 ## Table of Contents
 - [Overview](#overview)
@@ -24,4 +30,5 @@ This project is a web-based chatbot powered by AI to assist users with inquiries
 - **Data Integration**: Retrieves information from PDFs, web URLs, and YouTube transcripts.
 - **Real-time Feedback**: Displays a loading spinner when processing user queries.
 - **Responsive UI**: Built with a user-friendly interface for seamless interaction.
+
 
