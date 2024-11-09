@@ -1,0 +1,11 @@
+Flask
+langchain
+langchain-community
+python-dotenv
+pypdf
+openai
+faiss-cpu
+requests
+youtube_transcript_api
+unstructured
+tiktoken

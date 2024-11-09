@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chatbot UI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+       /* Custom styles for SFBU-themed colors and chat bubbles */
+       .chat-bubble {
+         max-width: 75%;
+         padding: 12px 16px;
+         border-radius: 20px;
+         margin-bottom: 8px;
+         font-size: 0.875rem;
+       }
+       .bot-bubble {
+         background-color: #d6af7c;
+         color: #333;
+         border-top-left-radius: 5px;
+         border-top-right-radius: 20px;
+         border-bottom-right-radius: 20px;
+         border-bottom-left-radius: 20px;
+       }
+       .user-bubble {
+         background-color: #003366; /* Navy Blue */
+         color: white;
+         border-top-left-radius: 20px;
+         border-top-right-radius: 5px;
+         border-bottom-left-radius: 20px;
+         border-bottom-right-radius: 20px;
+       }
+       /* SFBU Theme Colors */
+       .header-bg {
+         background-color: #003366; /* Navy Blue */
+       }
+       .button-bg {
+         background-color: #c59c65; /* Gold */
+       }
+       .header-menu-bg {
+         background-color: #c59c65; /* Gold */
+         position: relative;
+         padding: 1rem;
+         display: flex;
+         align-items: center;
+         color: #003366; /* Navy Blue for text */
+       }
+       .header-menu-bg::before {
+         content: "";
+         position: absolute;
+         top: 0;
+         right: 0;
+         width: 40%;
+         height: 100%;
+         background-color: #003366; /* Navy Blue */
+         clip-path: polygon(0 0, 600% 0, 500% 700%);
+       }
+       .header-content {
+         position: relative;
+         display: flex;
+         align-items: center;
+         z-index: 1;
+       }
+       .header-logo {
+         /* width: 36px; */
+         height: 36px;
+         margin-right: 0.5rem;
+       }
+       /* Custom 3D Shadow */
+       .custom-shadow {
+         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2),
+           0 12px 24px rgba(0, 0, 0, 0.15); /* Darker shadow for 3D effect */
+       }
+       .no-scrollbar {
+         -ms-overflow-style: none; /* IE and Edge */
+         scrollbar-width: none; /* Firefox */
+       }
+       #chat-container {
+         position: relative;
+         background-image: url("static\\images\\SFBU-round-logo.png");
+         background-repeat: no-repeat;
+         background-position: center;
+         background-size: 150px; /* Adjust size as needed */
+      }
+
+       /* Ensure chat messages are not blurred */
+       #main-container .chat-bubble {
+         position: relative;
+         /* z-index: 1; */
+       } */
+    </style>
+  </head>
+  <body
+    class="flex justify-center items-center h-screen bg-gray-100"
+    style="background-color: beige"
+  >
+    <!-- Chat Container -->
+    <div
+      id="main-container"
+      class="w-96 h-[650px] bg-gray-300 bg-opacity-50 border-2 border-[#003366] rounded-lg overflow-hidden custom-shadow flex flex-col"
+    >
+      <!-- Increased width and height -->
+      <!-- Header -->
+      <div class="header-menu-bg">
+        <div class="header-content">
+          <img
+            src="https://www.sfbu.edu/sites/default/files/logo.svg"
+            alt="SFBU Logo"
+            class="header-logo"
+          />
+        </div>
+      </div>
+
+      <!-- Chat Messages -->
+      <div
+        id="chat-container"
+        class="p-4 space-y-4 overflow-y-auto flex-grow mb-2 no-scrollbar"
+      >
+        <!-- Increased chat container height -->
+        <!-- Initial Bot Message -->
+        <div class="flex">
+          <div class="chat-bubble bot-bubble">Hello, how can I help you?</div>
+        </div>
+      </div>
+      <img
+        id="spinner"
+        src="https://i.gifer.com/2vDa.gif"
+        alt="Loading..."
+        class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+        style="height: 150px"
+      />
+      <!-- Message Input -->
+      <div
+        style="margin-top: 20px"
+        class="header-bg p-4 flex items-center justify-between"
+      >
+        <input
+          type="text"
+          id="message-input"
+          placeholder="Type your query here"
+          class="w-full p-2 rounded-l-lg text-sm outline-none"
+          onkeypress="handleEnter(event)"
+        />
+        <button
+          onclick="sendMessage()"
+          class="button-bg text-white p-2 rounded-r-lg"
+        >
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <script>
+      // Show spinner
+      function toggleBlur() {
+        const chatContainer = document.getElementById("chat-container");
+        if (chatContainer.style.filter === "blur(4px)") {
+          chatContainer.style.filter = "none";
+        } else {
+          chatContainer.style.filter = "blur(4px)";
+        }
+      }
+
+      function showSpinner() {
+        document.getElementById("spinner").style.display = "block";
+      }
+
+      // Hide spinner
+      function hideSpinner() {
+        document.getElementById("spinner").style.display = "none";
+      }
+      // Function to send a message
+      function handleEnter(event) {
+        // debugger;
+        if (event.key === "Enter") {
+          sendMessage();
+        }
+      }
+      async function sendMessage() {
+        toggleBlur();
+        const messageInput = document.getElementById("message-input");
+        const chatContainer = document.getElementById("chat-container");
+
+        // Get the message text and clear the input
+        const messageText = messageInput.value.trim();
+        messageInput.value = "";
+
+        if (messageText === "") return; // Do nothing if the message is empty
+
+        // Create a new user message bubble
+        const userMessage = document.createElement("div");
+        userMessage.className = "flex justify-end";
+        userMessage.innerHTML = `<div class="chat-bubble user-bubble">${messageText}</div>`;
+        chatContainer.appendChild(userMessage);
+
+        // Scroll to the latest message
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+        debugger;
+        showSpinner();
+
+        // Send the question to the server and get the response
+        try {
+          const response = await fetch("/ask", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ question: messageText }),
+          });
+          const data = await response.json();
+
+          // Create a new bot message bubble with the response
+          const botMessage = document.createElement("div");
+          botMessage.className = "flex";
+          botMessage.innerHTML = `<div class="chat-bubble bot-bubble">${data.answer}</div>`;
+          chatContainer.appendChild(botMessage);
+
+          // Scroll to the latest message
+          chatContainer.scrollTop = chatContainer.scrollHeight;
+        } catch (error) {
+          console.error("Error fetching bot response:", error);
+        } finally {
+          // Hide spinner once the response is received
+          hideSpinner();
+          toggleBlur();
+        }
+      }
+    </script>
+  </body>
+</html>
