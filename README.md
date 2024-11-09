@@ -2,6 +2,7 @@
 
 ![Screenshot 2024-11-08 214342](https://github.com/user-attachments/assets/ee94d458-dfd9-4f8d-8dbe-fd08cf2269c6)
 
+![sfbu-bot](https://github.com/user-attachments/assets/44cb6731-e298-42bd-a495-71c4334db44c)
 
 
 ## Table of Contents
